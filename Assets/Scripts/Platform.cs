@@ -12,10 +12,10 @@ public class Platform : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         MoveVertically();
+        DisablePlatform();
     }
 
     public void MoveVertically()
@@ -23,5 +23,13 @@ public class Platform : MonoBehaviour
         //transform.Translate(Vector2.up * Speed * Time.deltaTime);
         //transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x, 5.1f), Speed * Time.deltaTime);
         rb.velocity = Vector2.up * Speed * Time.deltaTime;
+    }
+
+    public void DisablePlatform()
+    {
+        if (transform.position.y >= 5.4f)
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

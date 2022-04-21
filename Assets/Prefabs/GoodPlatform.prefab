@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6902020599888530406}
   m_Layer: 0
   m_Name: GoodPlatform
-  m_TagString: Untagged
+  m_TagString: GoodPlatform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
