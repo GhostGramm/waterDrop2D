@@ -10,10 +10,17 @@ public class GameManager : MonoBehaviour
     public GameObject GoodPlatform;
     public GameObject BadPlatform;
 
+    [Header("References")]
+    public Transform PlatformParent;
+
+    private List<GameObject> pooledPlatforms = new List<GameObject>();
+    private int AmountToPool = 6;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        CreateObjectPool();
         SpawnStartingPlatforms();
     }
 
@@ -42,5 +49,28 @@ public class GameManager : MonoBehaviour
     public void SpawnPlayer(Vector2 spawnPosition)
     {
         Instantiate(Player, spawnPosition, transform.rotation);
+    }
+
+    public void CreateObjectPool()
+    {
+        for (int i = 0; i < AmountToPool; i++)
+        {
+            GameObject platform = Instantiate(GoodPlatform);
+            platform.SetActive(false);
+            platform.transform.parent = PlatformParent;
+            pooledPlatforms.Add(platform);
+        }
+    }
+
+    public GameObject GetPooledObject()
+    {
+        for (int i = 0; i < pooledPlatforms.Count; i++)
+        {
+            if (!pooledPlatforms[i].activeInHierarchy)
+            {
+                return pooledPlatforms[i];
+            }
+        }
+        return null;
     }
 }
