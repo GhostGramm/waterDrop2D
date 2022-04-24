@@ -334,6 +334,7 @@ MonoBehaviour:
   Player: {fileID: 503571220750129744, guid: 91e542409becaa74eb1a96357d87add2, type: 3}
   GoodPlatform: {fileID: 6880940710651827929, guid: 3d58aa262ce9777459d9141481835ef1, type: 3}
   BadPlatform: {fileID: 4264931361740123874, guid: 9678df5333579d84dae2e59bb687e841, type: 3}
+  PlatformParent: {fileID: 0}
 --- !u!1 &1780544640
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,7 +363,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

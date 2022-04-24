@@ -44,6 +44,15 @@ public class GameManager : MonoBehaviour
         }
         //---------------------------SPAWN PLAYER ON THE SECOND PLATFORM LOCATION -------------------//
         SpawnPlayer(playerSpawnPosition);
+        InvokeRepeating("SubsequentPlatform", 2f, 2f);
+    }
+
+    public void SubsequentPlatform()
+    {
+        Vector2 spawnPosition = new Vector2(Random.Range(-3f, 3f), -5);
+        GameObject platform = GetPooledObject();
+        platform.transform.position = spawnPosition;
+        platform.SetActive(true);
     }
 
     public void SpawnPlayer(Vector2 spawnPosition)
