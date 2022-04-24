@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
         //---------------------------SPAWN PLAYER ON THE SECOND PLATFORM LOCATION -------------------//
         SpawnPlayer(playerSpawnPosition);
         InvokeRepeating("SubsequentPlatform", 2f, 2f);
+        StartCoroutine(SpawnBadPlatform());
     }
 
     public void SubsequentPlatform()
@@ -55,11 +56,21 @@ public class GameManager : MonoBehaviour
         platform.SetActive(true);
     }
 
+    public IEnumerator SpawnBadPlatform()
+    {
+        float counter = Random.Range(2, 15);
+        yield return new WaitForSeconds(counter);
+        Vector2 spawnPosition = new Vector2(Random.Range(-3f, 3f), -5);
+        Instantiate(BadPlatform, spawnPosition, transform.rotation);
+        StartCoroutine(SpawnBadPlatform());
+    }
+
     public void SpawnPlayer(Vector2 spawnPosition)
     {
         Instantiate(Player, spawnPosition, transform.rotation);
     }
 
+    //-----------------------Obhect Pooling--------------------//
     public void CreateObjectPool()
     {
         for (int i = 0; i < AmountToPool; i++)
@@ -82,4 +93,6 @@ public class GameManager : MonoBehaviour
         }
         return null;
     }
+
+    //----------------------End-----------------------------//
 }

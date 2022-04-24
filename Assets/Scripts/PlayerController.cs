@@ -21,8 +21,6 @@ public class PlayerController : MonoBehaviour
     public void Movement()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
-        print(horizontalInput);
-
         rb.velocity = (Vector2.right * Speed * horizontalInput);
     }
 }
