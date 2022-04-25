@@ -7,14 +7,20 @@ public class GameManager : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject Player;
+    public GameObject testObject;
     public GameObject GoodPlatform;
     public GameObject BadPlatform;
 
     [Header("References")]
     public Transform PlatformParent;
 
+    //-----------Object Pool----------------//
     private List<GameObject> pooledPlatforms = new List<GameObject>();
     private int AmountToPool = 6;
+    //-------------End---------------//
+
+    private List<GameObject> activePlatforms = new List<GameObject>();
+    private bool canSpawnPowerUp = false;
 
 
     // Start is called before the first frame update
@@ -46,23 +52,37 @@ public class GameManager : MonoBehaviour
         SpawnPlayer(playerSpawnPosition);
         InvokeRepeating("SubsequentPlatform", 2f, 2f);
         StartCoroutine(SpawnBadPlatform());
+        StartCoroutine(ActivatePowerUpSpawning());
     }
 
     public void SubsequentPlatform()
     {
-        Vector2 spawnPosition = new Vector2(Random.Range(-3f, 3f), -5);
+        Vector2 spawnPosition = new Vector2(Random.Range(-3f, 3f), -6);
         GameObject platform = GetPooledObject();
         platform.transform.position = spawnPosition;
         platform.SetActive(true);
+        if (canSpawnPowerUp)
+        {
+            SpawnPowerUp(spawnPosition);
+            canSpawnPowerUp = false;
+        }
     }
 
     public IEnumerator SpawnBadPlatform()
     {
         float counter = Random.Range(2, 15);
         yield return new WaitForSeconds(counter);
-        Vector2 spawnPosition = new Vector2(Random.Range(-3f, 3f), -5);
+        Vector2 spawnPosition = new Vector2(Random.Range(-3f, 3f), -6);
         Instantiate(BadPlatform, spawnPosition, transform.rotation);
         StartCoroutine(SpawnBadPlatform());
+    }
+
+    public IEnumerator ActivatePowerUpSpawning()
+    {
+        float counter = Random.Range(8, 15);
+        yield return new WaitForSeconds(counter);
+        canSpawnPowerUp = true;
+        StartCoroutine(ActivatePowerUpSpawning());
     }
 
     public void SpawnPlayer(Vector2 spawnPosition)
@@ -95,4 +115,34 @@ public class GameManager : MonoBehaviour
     }
 
     //----------------------End-----------------------------//
+
+    public Vector2 GetLocationforPowerUpSpawn()
+    {
+        //if (PlatformParent.childCount != 0) return;
+        Vector2 spawnPosition = new Vector2();
+        activePlatforms.Clear();
+        for (int i = 0; i < PlatformParent.childCount; i++)
+        {
+            GameObject platform = PlatformParent.GetChild(i).gameObject;
+            if (platform.activeSelf)
+            {
+                if (!activePlatforms.Contains(platform))
+                {
+                    activePlatforms.Add(platform);
+                    Debug.Log(activePlatforms.Count);
+                }
+            }
+        }
+        if (activePlatforms.Count != 0)
+        {
+            GameObject recentPlatform = activePlatforms[activePlatforms.Count - 1];
+            spawnPosition = new Vector2(recentPlatform.transform.position.x, recentPlatform.transform.position.y + 1);
+        }
+        return spawnPosition;
+    }
+
+    public void SpawnPowerUp(Vector2 spawnPosition)
+    {
+        Instantiate(testObject, new Vector2(spawnPosition.x, spawnPosition.y + 0.5f), transform.rotation);
+    }
 }
