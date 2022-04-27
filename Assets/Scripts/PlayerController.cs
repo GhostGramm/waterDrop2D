@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        StartCoroutine(PowerUpManager.instance.ActivateShield(transform));
     }
 
     // Update is called once per frame
