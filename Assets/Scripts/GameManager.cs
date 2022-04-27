@@ -5,6 +5,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
+    [Header("PowerUps")]
+    public List<GameObject> PowerUpsObjects = new List<GameObject>();
+
     [Header("Prefabs")]
     public GameObject Player;
     public GameObject testObject;
@@ -26,6 +29,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1.5f;
         CreateObjectPool();
         SpawnStartingPlatforms();
     }
@@ -36,6 +40,7 @@ public class GameManager : MonoBehaviour
 
     }
 
+    //spawn 4 platforms at the beginning of the game
     public void SpawnStartingPlatforms()
     {
         float yPosition = 2;
@@ -79,7 +84,7 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator ActivatePowerUpSpawning()
     {
-        float counter = Random.Range(8, 15);
+        float counter = Random.Range(15, 30);
         yield return new WaitForSeconds(counter);
         canSpawnPowerUp = true;
         StartCoroutine(ActivatePowerUpSpawning());
@@ -90,7 +95,7 @@ public class GameManager : MonoBehaviour
         Instantiate(Player, spawnPosition, transform.rotation);
     }
 
-    //-----------------------Obhect Pooling--------------------//
+    //-----------------------Object Pooling--------------------//
     public void CreateObjectPool()
     {
         for (int i = 0; i < AmountToPool; i++)
